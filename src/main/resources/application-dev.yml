@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    default:
+      jdbc-url: jdbc:sqlite:D:/zhuomian/water/database.db
+      driver-class-name: org.sqlite.JDBC
+    pg:
+      jdbc-url: jdbc:postgresql://localhost:5432/water?stringtype=unspecified
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+      password: 123
+
+databaseSelect: sqlite

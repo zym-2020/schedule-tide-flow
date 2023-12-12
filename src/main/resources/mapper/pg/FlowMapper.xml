@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nnu.edu.schedule.dao.pg.PgFlowMapper">
+    <resultMap id="FlowMap" type="nnu.edu.schedule.pojo.Flow">
+        <result column="stcd" property="stationId"/>
+        <result column="tm" property="time"/>
+        <result column="z" property="waterLevelValue"/>
+        <result column="q" property="flowValue"/>
+    </resultMap>
+
+    <insert id="insertValue">
+        insert into flow values
+        <foreach collection="flowList" item="item" separator=",">
+            (#{item.stationId}, #{item.time}, #{item.waterLevelValue}, #{item.flowValue})
+        </foreach>
+        on conflict (stcd, tm) do nothing
+    </insert>
+</mapper>

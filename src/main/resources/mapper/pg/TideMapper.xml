@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nnu.edu.schedule.dao.pg.PgTideMapper">
+    <resultMap id="TideMap" type="nnu.edu.schedule.pojo.Tide">
+        <result column="stcd" property="stationId"/>
+        <result column="tm" property="time"/>
+        <result column="tdz" property="tideValue"/>
+    </resultMap>
+
+    <insert id="insertValue">
+        insert into tide values
+        <foreach collection="tideList" item="item" separator=",">
+            (#{item.stationId}, #{item.time}, #{item.tideValue})
+        </foreach>
+        on conflict (stcd, tm) do nothing
+    </insert>
+</mapper>
