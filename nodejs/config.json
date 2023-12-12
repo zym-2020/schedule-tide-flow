@@ -1,0 +1,43 @@
+{
+    "tide": {
+        "url": "http://10.6.53.37:83/apiJson/get",
+        "header": {
+            "Authorization": "fOj!X@1$knK0SrDBqproI4DQNJSLKXY"
+        },
+        "body": {
+            "ST_TIDE_R[]": {
+                "ST_TIDE_R": {
+                    "STCD{}": [
+                        "60116700CWF",
+                        "60117400:",
+                        "60117840",
+                        "60117820"
+                    ],
+                    "@column": "STCD:id,TM,TDZ",
+                    "@order": "TM-"
+                },
+                "page": 0,
+                "count": 100
+            }
+        }
+    },
+    "flow": {
+        "url": "http://10.6.53.37:83/apiJson/get",
+        "header": {
+            "Authorization": "fOj!X@1$knK0SrDBqproI4DQNJSLKXY"
+        },
+        "body": {
+            "ST_TIDE_R[]": {
+                "ST_RIVER_R": {
+                    "STCD{}": [
+                        "60117400"
+                    ],
+                    "@column": "STCD:id,TM,Z,Q",
+                    "@order": "TM-"
+                },
+                "page": 0,
+                "count": 100
+            }
+        }
+    }
+}
