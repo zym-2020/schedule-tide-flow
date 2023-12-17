@@ -2,10 +2,15 @@ package nnu.edu.schedule.common.config;
 
 import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.schedule.service.FetchService;
+import nnu.edu.schedule.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,42 +27,74 @@ public class TimedTask {
     @Autowired
     FetchService fetchService;
 
-    String url = "http://10.6.53.37:83/apiJson/get";
-    String token = "fOj!X@1$knK0SrDBqproI4DQNJSLKXY";
+    @Value("${jsonAddress}")
+    String jsonAddress;
 
-    @Scheduled(cron = "0 15 * * * ?")
+    @Value("${dateAddress}")
+    String dateAddress;
+
+
+    @Scheduled(cron = "0 30 * * * ?")
     public void fetch() {
+        JSONObject dateJson = FileUtil.readJson(dateAddress);
+        String lastDate = dateJson.getString("lastDate");
         LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime lastHourDateTime = currentTime.minusHours(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String timeParam = currentTime.format(formatter) + "," + lastHourDateTime.format(formatter);
+        String timeParam = lastDate + "," + currentTime.format(formatter);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
-        JSONObject tideJsonChild = new JSONObject();
-        tideJsonChild.put("STCD{}", new String[]{"60116700CWF", "60117840", "60117400", "60117820"});
+        JSONObject config = FileUtil.readJson(jsonAddress);
+
+        HttpHeaders tideHeaders = new HttpHeaders();
+        JSONObject tideHeader = config.getJSONObject("tide").getJSONObject("header");
+        if (tideHeader != null) {
+            for (String key : tideHeader.keySet()) {
+                tideHeaders.set(key, tideHeader.getString(key));
+            }
+        }
+
+        JSONObject tideRequestBody = config.getJSONObject("tide").getJSONObject("body");
+        JSONObject tideJsonChild = tideRequestBody.getJSONObject("ST_TIDE_R[]").getJSONObject("ST_TIDE_R");
         tideJsonChild.put("TM%", timeParam);
-        tideJsonChild.put("@column", "STCD:id,TM,TDZ");
-        tideJsonChild.put("@order", "TM-");
-        JSONObject tideJson = new JSONObject();
-        tideJson.put("ST_TIDE_R", tideJsonChild);
-        tideJson.put("page", 0);
-        tideJson.put("count", 100);
-        JSONObject tideRequestBody = new JSONObject();
-        tideRequestBody.put("ST_TIDE_R[]", tideJson);
-        fetchService.fetchTide(url, headers, tideRequestBody.toJSONString());
+        fetchService.fetchTide(config.getJSONObject("tide").getString("url"), tideHeaders, tideRequestBody.toJSONString());
 
-        JSONObject flowJsonChild = new JSONObject();
-        flowJsonChild.put("STCD{}", new String[]{"60117400"});
+        HttpHeaders flowHeaders = new HttpHeaders();
+        JSONObject flowHeader = config.getJSONObject("flow").getJSONObject("header");
+        for (String key : flowHeader.keySet()) {
+            flowHeaders.set(key, flowHeader.getString(key));
+        }
+        JSONObject flowRequestBody = config.getJSONObject("flow").getJSONObject("body");
+
+        JSONObject flowJsonChild = flowRequestBody.getJSONObject("ST_TIDE_R[]").getJSONObject("ST_RIVER_R");
         flowJsonChild.put("TM%", timeParam);
-        flowJsonChild.put("@column", "STCD:id,TM,Z,Q");
-        flowJsonChild.put("@order", "TM-");
-        JSONObject flowJson = new JSONObject();
-        tideJson.put("ST_RIVER_R", tideJsonChild);
-        tideJson.put("page", 0);
-        tideJson.put("count", 100);
-        JSONObject flowRequestBody = new JSONObject();
-        flowRequestBody.put("ST_RIVER_R[]", flowJson);
-        fetchService.fetchTide(url, headers, flowRequestBody.toJSONString());
+        fetchService.fetchFlow(config.getJSONObject("flow").getString("url"), flowHeaders, flowRequestBody.toJSONString());
+
+        dateJson.put("lastDate", currentTime.format(formatter));
+        FileUtil.writeJson(dateAddress, dateJson);
+    }
+
+    /**
+    * @Description:定时备份任务
+    * @Author: Yiming
+    * @Date: 2023/12/17
+    */
+    @Scheduled(cron = "0 0 0 1 3,6,9,12 ?")
+//    @Scheduled(cron = "0 58 * * * ?")
+    void backup() {
+        JSONObject dateJson = FileUtil.readJson(dateAddress);
+        String storageDate = dateJson.getString("storageDate");
+        String lastDate = dateJson.getString("lastDate");
+
+        DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime dateTime = LocalDateTime.parse(lastDate, originalFormatter);
+
+        String tideTableName = "tide" + storageDate + "_" + dateTime.format(dateTimeFormatter);
+        fetchService.backupTide(tideTableName, lastDate);
+
+        String flowTableName = "flow" + storageDate + "_" + dateTime.format(dateTimeFormatter);
+        fetchService.backupFlow(flowTableName, lastDate);
+
+        dateJson.put("storageDate", dateTime.format(dateTimeFormatter));
+        FileUtil.writeJson(dateAddress, dateJson);
     }
 }

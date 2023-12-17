@@ -14,4 +14,8 @@ public interface FetchService {
     void fetchTide(String url, HttpHeaders headers, String jsonBody);
 
     void fetchFlow(String url, HttpHeaders headers, String jsonBody);
+
+    void backupTide(String tableName, String time);
+
+    void backupFlow(String tableName, String time);
 }

@@ -52,6 +52,6 @@ public class DynamicDataSourceAspect {
     @After("execution(* nnu.edu.schedule.dao.sqlite.*.*(..))")
     public void restoreDataSource() {
         // 将数据源置为默认数据源
-        DataSourceContextHolder.clearDataSourceKey();
+        DataSourceContextHolder.setDataSourceKey("default");
     }
 }

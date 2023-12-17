@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 public class Tide {
     String stationId;
     String time;
-    Float tideValue;
+    Double tideValue;
 }

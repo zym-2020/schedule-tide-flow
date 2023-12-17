@@ -25,7 +25,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 public class DataSourceConfig {
-    @Bean("defaultSource")
+    @Bean("default")
     @ConfigurationProperties("spring.datasource.default")
     public DataSource defaultSource() {
         return DataSourceBuilder.create().build();

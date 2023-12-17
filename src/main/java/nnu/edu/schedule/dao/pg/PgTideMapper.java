@@ -16,4 +16,12 @@ import java.util.List;
 @Repository
 public interface PgTideMapper {
     void insertValue(@Param("tideList") List<Tide> tideList);
+
+    void createTable(@Param("tableName") String tableName);
+
+    List<Tide> selectAllDataByTime(@Param("time") String time);
+
+    void insertValueByTableName(@Param("tideList") List<Tide> tideList, @Param("tableName") String tableName);
+
+    void deleteDataByTime(@Param("time") String time);
 }

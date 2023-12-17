@@ -1,6 +1,7 @@
 package nnu.edu.schedule.dao.sqlite;
 
 import nnu.edu.schedule.pojo.Flow;
+import nnu.edu.schedule.pojo.Tide;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,12 @@ import java.util.List;
 @Repository
 public interface SqliteFlowMapper {
     void insertValue(@Param("flowList") List<Flow> flowList);
+
+    void createTable(@Param("tableName") String tableName);
+
+    List<Flow> selectAllDataByTime(@Param("time") String time);
+
+    void insertValueByTableName(@Param("flowList") List<Flow> flowList, @Param("tableName") String tableName);
+
+    void deleteDataByTime(@Param("time") String time);
 }

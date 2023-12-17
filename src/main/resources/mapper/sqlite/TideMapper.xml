@@ -8,10 +8,33 @@
     </resultMap>
 
     <insert id="insertValue">
-        insert into tide values
+        insert or ignore into tide values
         <foreach collection="tideList" item="item" separator=",">
             (#{item.stationId}, #{item.time}, #{item.tideValue})
         </foreach>
-        on conflict (stcd, tm) do nothing
     </insert>
+
+    <insert id="createTable">
+        create table if not exists ${tableName}(
+            stcd text,
+            tm text,
+            tdz real,
+            primary key(stcd, tm)
+        )
+    </insert>
+
+    <select id="selectAllDataByTime" resultMap="TideMap">
+        select * from tide where tm &lt;= #{time}
+    </select>
+
+    <insert id="insertValueByTableName">
+        insert or ignore into ${tableName} values
+        <foreach collection="tideList" item="item" separator=",">
+            (#{item.stationId}, #{item.time}, #{item.tideValue})
+        </foreach>
+    </insert>
+
+    <delete id="deleteDataByTime">
+        delete from tide where tm &lt;= #{time}
+    </delete>
 </mapper>

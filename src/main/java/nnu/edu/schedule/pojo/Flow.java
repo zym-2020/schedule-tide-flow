@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 public class Flow {
     String stationId;
     String time;
-    Float waterLevelValue;
-    Float flowValue;
+    Double waterLevelValue;
+    Double flowValue;
 }

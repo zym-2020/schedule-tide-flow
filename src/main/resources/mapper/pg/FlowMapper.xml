@@ -15,4 +15,30 @@
         </foreach>
         on conflict (stcd, tm) do nothing
     </insert>
+
+    <insert id="createTable">
+        create table if not exists ${tableName}(
+           stcd text,
+           tm text,
+           z real,
+           q real,
+           primary key(stcd, tm)
+        )
+    </insert>
+
+    <select id="selectAllDataByTime" resultMap="FlowMap">
+        select * from flow where tm &lt;= #{time}
+    </select>
+
+    <insert id="insertValueByTableName">
+        insert into ${tableName} values
+        <foreach collection="flowList" item="item" separator=",">
+            (#{item.stationId}, #{item.time}, #{item.waterLevelValue}, #{item.flowValue})
+        </foreach>
+        on conflict (stcd, tm) do nothing
+    </insert>
+
+    <delete id="deleteDataByTime">
+        delete from flow where tm &lt;= #{time}
+    </delete>
 </mapper>

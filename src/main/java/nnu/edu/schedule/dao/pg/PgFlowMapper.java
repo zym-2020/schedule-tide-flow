@@ -16,4 +16,12 @@ import java.util.List;
 @Repository
 public interface PgFlowMapper {
     void insertValue(@Param("flowList") List<Flow> flowList);
+
+    void createTable(@Param("tableName") String tableName);
+
+    List<Flow> selectAllDataByTime(@Param("time") String time);
+
+    void insertValueByTableName(@Param("flowList") List<Flow> flowList, @Param("tableName") String tableName);
+
+    void deleteDataByTime(@Param("time") String time);
 }
