@@ -49,6 +49,7 @@ public class FetchServiceImpl implements FetchService {
         JSONObject jsonObject = RequestUtil.postUtil(url, headers, jsonBody, JSONObject.class);
         if (jsonObject.getString("msg").equals("success")) {
             JSONArray jsonArray = jsonObject.getJSONArray("ST_TIDE_R[]");
+            if (jsonArray == null) return;
             List<Tide> tideList = new ArrayList<>();
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject tide = jsonArray.getJSONObject(i);
@@ -64,13 +65,16 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public void fetchFlow(String url, HttpHeaders headers, String jsonBody) {
         JSONObject jsonObject = RequestUtil.postUtil(url, headers, jsonBody, JSONObject.class);
+        log.info(jsonObject.toJSONString());
         if (jsonObject.getString("msg").equals("success")) {
-            JSONArray jsonArray = jsonObject.getJSONArray("ST_TIDE_R[]");
+            JSONArray jsonArray = jsonObject.getJSONArray("ST_RIVER_R[]");
+            if (jsonArray == null) return;
             List<Flow> flowList = new ArrayList<>();
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject flow = jsonArray.getJSONObject(i);
                 flowList.add(new Flow(flow.getString("STCD"), flow.getString("TM"), flow.getDouble("Z"), flow.getDouble("Q")));
             }
+            log.info(flowList.toString());
             if (flowList.size() > 0) {
                 if (databaseSelect.equals("sqlite")) sqliteFlowMapper.insertValue(flowList);
                 else pgFlowMapper.insertValue(flowList);

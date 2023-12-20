@@ -64,7 +64,7 @@ public class TimedTask {
         }
         JSONObject flowRequestBody = config.getJSONObject("flow").getJSONObject("body");
 
-        JSONObject flowJsonChild = flowRequestBody.getJSONObject("ST_TIDE_R[]").getJSONObject("ST_RIVER_R");
+        JSONObject flowJsonChild = flowRequestBody.getJSONObject("ST_RIVER_R[]").getJSONObject("ST_RIVER_R");
         flowJsonChild.put("TM%", timeParam);
         fetchService.fetchFlow(config.getJSONObject("flow").getString("url"), flowHeaders, flowRequestBody.toJSONString());
 
@@ -78,7 +78,7 @@ public class TimedTask {
     * @Date: 2023/12/17
     */
     @Scheduled(cron = "0 0 0 1 3,6,9,12 ?")
-//    @Scheduled(cron = "0 58 * * * ?")
+//    @Scheduled(cron = "0 54 * * * ?")
     void backup() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String storageDate = dateJson.getString("storageDate");
