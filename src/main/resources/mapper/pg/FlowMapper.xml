@@ -30,6 +30,14 @@
         select * from flow where tm &lt;= #{time}
     </select>
 
+    <select id="selectDataByStationIdAndTime" resultMap="FlowMap">
+        select * from flow where stcd = #{stationId} and tm &lt;= #{time}
+    </select>
+
+    <select id="selectDataByStationIdAndStartTimeAndEndTime" resultMap="FlowMap">
+        select * from flow where stcd = #{stationId} and tm &gt;= #{startTime} and tm &lt;= #{endTime}
+    </select>
+
     <insert id="insertValueByTableName">
         insert into ${tableName} values
         <foreach collection="flowList" item="item" separator=",">

@@ -1,5 +1,6 @@
 package nnu.edu.schedule.dao.pg;
 
+import nnu.edu.schedule.pojo.Flow;
 import nnu.edu.schedule.pojo.Tide;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,10 @@ public interface PgTideMapper {
     void createTable(@Param("tableName") String tableName);
 
     List<Tide> selectAllDataByTime(@Param("time") String time);
+
+    List<Tide> selectDataByStationIdAndTime(@Param("stationId") String stationId, @Param("time") String time);
+
+    List<Tide> selectDataByStationIdAndStartTimeAndEndTime(@Param("stationId") String stationId, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
     void insertValueByTableName(@Param("tideList") List<Tide> tideList, @Param("tableName") String tableName);
 

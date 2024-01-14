@@ -22,6 +22,10 @@ public interface SqliteFlowMapper {
 
     List<Flow> selectAllDataByTime(@Param("time") String time);
 
+    List<Flow> selectDataByStationIdAndTime(@Param("stationId") String stationId, @Param("time") String time);
+
+    List<Flow> selectDataByStationIdAndStartTimeAndEndTime(@Param("stationId") String stationId, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
     void insertValueByTableName(@Param("flowList") List<Flow> flowList, @Param("tableName") String tableName);
 
     void deleteDataByTime(@Param("time") String time);

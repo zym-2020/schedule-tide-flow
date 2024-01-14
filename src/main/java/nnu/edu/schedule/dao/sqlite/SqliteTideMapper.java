@@ -21,6 +21,10 @@ public interface SqliteTideMapper {
 
     List<Tide> selectAllDataByTime(@Param("time") String time);
 
+    List<Tide> selectDataByStationIdAndTime(@Param("stationId") String stationId, @Param("time") String time);
+
+    List<Tide> selectDataByStationIdAndStartTimeAndEndTime(@Param("stationId") String stationId, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
     void insertValueByTableName(@Param("tideList") List<Tide> tideList, @Param("tableName") String tableName);
 
     void deleteDataByTime(@Param("time") String time);

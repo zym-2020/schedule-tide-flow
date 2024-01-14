@@ -24,7 +24,8 @@ public enum ResultEnum {
     REMOTE_SERVICE_ERROR(-8, "远程服务调用出错"),//远程服务调用出错
     DUPLICATE_NAME_ERROR(-9, "文件重名！"),
     CONFIG_ERROR(-10, "配置文件错误"),
-    FILE_READ_OR_WRITE_ERROR(-11, "文件读写错误")
+    FILE_READ_OR_WRITE_ERROR(-11, "文件读写错误"),
+    PARAMETER_ERROR(-12, "请求参数错误")
 
     ;
     private Integer code;

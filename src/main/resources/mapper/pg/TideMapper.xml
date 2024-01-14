@@ -28,6 +28,14 @@
         select * from tide where tm &lt;= #{time}
     </select>
 
+    <select id="selectDataByStationIdAndTime" resultMap="TideMap">
+        select * from tide where stcd = #{stationId} and tm &lt;= #{time}
+    </select>
+
+    <select id="selectDataByStationIdAndStartTimeAndEndTime" resultMap="TideMap">
+        select * from tide where stcd = #{stationId} and tm &gt;= #{startTime} and tm &lt;= #{endTime}
+    </select>
+
     <insert id="insertValueByTableName">
         insert into ${tableName} values
         <foreach collection="tideList" item="item" separator=",">
