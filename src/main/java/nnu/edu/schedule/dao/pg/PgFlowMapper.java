@@ -25,6 +25,8 @@ public interface PgFlowMapper {
 
     List<Flow> selectDataByStationIdAndStartTimeAndEndTime(@Param("stationId") String stationId, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
+    List<Flow> selectDataByStartTimeAndEndTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+
     void insertValueByTableName(@Param("flowList") List<Flow> flowList, @Param("tableName") String tableName);
 
     void deleteDataByTime(@Param("time") String time);

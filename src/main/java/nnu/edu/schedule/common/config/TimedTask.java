@@ -82,17 +82,17 @@ public class TimedTask {
     void backup() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String storageDate = dateJson.getString("storageDate");
-        String lastDate = dateJson.getString("lastDate");
+        String transferDate = dateJson.getString("transferDate");
 
         DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime dateTime = LocalDateTime.parse(lastDate, originalFormatter);
+        LocalDateTime dateTime = LocalDateTime.parse(transferDate, originalFormatter);
 
         String tideTableName = "tide" + storageDate + "_" + dateTime.format(dateTimeFormatter);
-        fetchService.backupTide(tideTableName, lastDate);
+        fetchService.backupTide(tideTableName, transferDate);
 
         String flowTableName = "flow" + storageDate + "_" + dateTime.format(dateTimeFormatter);
-        fetchService.backupFlow(flowTableName, lastDate);
+        fetchService.backupFlow(flowTableName, transferDate);
 
         dateJson.put("storageDate", dateTime.format(dateTimeFormatter));
         FileUtil.writeJson(dateAddress, dateJson);

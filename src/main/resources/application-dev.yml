@@ -9,6 +9,6 @@ spring:
       username: postgres
       password: 123
 
-databaseSelect: pg
+databaseSelect: sqlite
 jsonAddress: E:/github/schedule-tide-flow/config.json
 dateAddress: E:/github/schedule-tide-flow/date.json

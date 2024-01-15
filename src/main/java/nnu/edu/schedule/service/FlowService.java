@@ -17,4 +17,5 @@ public interface FlowService {
     List<Flow> getData(String time);
 
     List<Flow> getData(String stationId, String startTime, String endTime);
+
 }

@@ -31,12 +31,13 @@ public class TideController {
         String time = jsonObject.getString("time");
         String startTime = jsonObject.getString("startTime");
         String endTime = jsonObject.getString("endTime");
-        if (!time.equals(null) && stationId.equals(null) && startTime.equals(null) && endTime.equals(null))
+        if (time != null && stationId == null && startTime == null && endTime == null)
             return ResultUtils.success(tideService.getData(time));
-        else if (!time.equals(null) && !stationId.equals(null) && startTime.equals(null) && endTime.equals(null))
+        else if (time != null && stationId != null && startTime == null && endTime == null)
             return ResultUtils.success(tideService.getData(stationId, time));
-        else if (time.equals(null) && !stationId.equals(null) && !startTime.equals(null) && !endTime.equals(null))
+        else if (time == null && stationId != null && startTime != null && endTime != null)
             return ResultUtils.success(tideService.getData(stationId, startTime, endTime));
         else throw new MyException(ResultEnum.PARAMETER_ERROR);
     }
+
 }

@@ -1,9 +1,11 @@
 package nnu.edu.schedule.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.schedule.dao.pg.PgTideMapper;
 import nnu.edu.schedule.dao.sqlite.SqliteTideMapper;
 import nnu.edu.schedule.pojo.Tide;
 import nnu.edu.schedule.service.TideService;
+import nnu.edu.schedule.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class TideServiceImpl implements TideService {
 
     @Value("${databaseSelect}")
     String databaseSelect;
+
 
     @Override
     public List<Tide> getData(String stationId, String time) {
@@ -54,4 +57,6 @@ public class TideServiceImpl implements TideService {
             return pgTideMapper.selectDataByStationIdAndStartTimeAndEndTime(stationId, startTime, endTime);
         }
     }
+
+
 }

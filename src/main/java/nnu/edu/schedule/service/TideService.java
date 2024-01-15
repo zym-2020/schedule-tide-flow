@@ -18,4 +18,5 @@ public interface TideService {
     List<Tide> getData(String time);
 
     List<Tide> getData(String stationId, String startTime, String endTime);
+
 }

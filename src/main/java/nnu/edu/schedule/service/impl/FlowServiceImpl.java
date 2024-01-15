@@ -1,9 +1,11 @@
 package nnu.edu.schedule.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.schedule.dao.pg.PgFlowMapper;
 import nnu.edu.schedule.dao.sqlite.SqliteFlowMapper;
 import nnu.edu.schedule.pojo.Flow;
 import nnu.edu.schedule.service.FlowService;
+import nnu.edu.schedule.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class FlowServiceImpl implements FlowService {
 
     @Value("${databaseSelect}")
     String databaseSelect;
+
 
     @Override
     public List<Flow> getData(String stationId, String time) {
@@ -54,4 +57,5 @@ public class FlowServiceImpl implements FlowService {
             return pgFlowMapper.selectDataByStationIdAndStartTimeAndEndTime(stationId, startTime, endTime);
         }
     }
+
 }

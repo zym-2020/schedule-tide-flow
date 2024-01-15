@@ -37,6 +37,10 @@
         select * from flow where stcd = #{stationId} and tm &gt;= #{startTime} and tm &lt;= #{endTime}
     </select>
 
+    <select id="selectDataByStartTimeAndEndTime" resultMap="FlowMap">
+        select * from flow where tm &gt;= #{startTime} and tm &lt;= #{endTime}
+    </select>
+
     <insert id="insertValueByTableName">
         insert or ignore into ${tableName} values
         <foreach collection="flowList" item="item" separator=",">
