@@ -11,4 +11,6 @@ import com.alibaba.fastjson2.JSONObject;
  */
 public interface TransferService {
     JSONObject transferData(String startTime, String endTime);
+
+    void push();
 }

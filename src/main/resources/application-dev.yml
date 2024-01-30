@@ -12,3 +12,6 @@ spring:
 databaseSelect: sqlite
 jsonAddress: E:/github/schedule-tide-flow/config.json
 dateAddress: E:/github/schedule-tide-flow/date.json
+
+tideUrl: http://localhost:9999/tide/pushData
+flowUrl: http://localhost:9999/flow/pushData

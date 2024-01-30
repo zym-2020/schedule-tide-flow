@@ -2,6 +2,7 @@ package nnu.edu.schedule.common.config;
 
 import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.schedule.service.FetchService;
+import nnu.edu.schedule.service.TransferService;
 import nnu.edu.schedule.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,9 @@ import java.time.format.DateTimeFormatter;
 public class TimedTask {
     @Autowired
     FetchService fetchService;
+
+    @Autowired
+    TransferService transferService;
 
     @Value("${jsonAddress}")
     String jsonAddress;
@@ -70,6 +74,11 @@ public class TimedTask {
 
         dateJson.put("lastDate", currentTime.format(formatter));
         FileUtil.writeJson(dateAddress, dateJson);
+    }
+
+    @Scheduled(cron = "0 40 * * * ?")
+    public void push() {
+        transferService.push();
     }
 
     /**
