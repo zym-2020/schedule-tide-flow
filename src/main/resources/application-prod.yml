@@ -12,3 +12,6 @@ spring:
 databaseSelect: sqlite
 jsonAddress: C:/water/config.json
 dateAddress: C:/water/date.json
+
+tideUrl: http://10.83.1.82:9999/tide/pushData
+flowUrl: http://10.83.1.82:9999/flow/pushData

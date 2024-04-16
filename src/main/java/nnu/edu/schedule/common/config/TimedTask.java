@@ -38,11 +38,11 @@ public class TimedTask {
     String dateAddress;
 
 
-    @Scheduled(cron = "0 30 * * * ?")
+    @Scheduled(cron = "0 0 * * * ?")
     public void fetch() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String lastDate = dateJson.getString("lastDate");
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now().minusHours(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timeParam = lastDate + "," + currentTime.format(formatter);
 
@@ -61,6 +61,25 @@ public class TimedTask {
         tideJsonChild.put("TM%", timeParam);
         fetchService.fetchTide(config.getJSONObject("tide").getString("url"), tideHeaders, tideRequestBody.toJSONString());
 
+
+
+//        dateJson.put("lastDate", currentTime.format(formatter));
+//        FileUtil.writeJson(dateAddress, dateJson);
+        transferService.push(lastDate, currentTime.format(formatter));
+    }
+
+    @Scheduled(cron = "0 30 14 * * ?")
+    public void fetch1() {
+        JSONObject dateJson = FileUtil.readJson(dateAddress);
+        String lastDate = dateJson.getString("lastDate");
+        LocalDateTime currentTime = LocalDateTime.now().minusHours(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String timeParam = lastDate + "," + currentTime.format(formatter);
+
+        JSONObject config = FileUtil.readJson(jsonAddress);
+
+
+
         HttpHeaders flowHeaders = new HttpHeaders();
         JSONObject flowHeader = config.getJSONObject("flow").getJSONObject("header");
         for (String key : flowHeader.keySet()) {
@@ -74,12 +93,13 @@ public class TimedTask {
 
         dateJson.put("lastDate", currentTime.format(formatter));
         FileUtil.writeJson(dateAddress, dateJson);
+        transferService.push(lastDate, currentTime.format(formatter));
     }
 
-    @Scheduled(cron = "0 40 * * * ?")
-    public void push() {
-        transferService.push();
-    }
+//    @Scheduled(cron = "0 40 * * * ?")
+//    public void push() {
+//        transferService.push();
+//    }
 
     /**
     * @Description:定时备份任务

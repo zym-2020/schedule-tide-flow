@@ -1,6 +1,7 @@
 package nnu.edu.schedule.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import nnu.edu.schedule.dao.pg.PgFlowMapper;
 import nnu.edu.schedule.dao.pg.PgTideMapper;
 import nnu.edu.schedule.dao.sqlite.SqliteFlowMapper;
@@ -27,6 +28,7 @@ import java.util.List;
  * @Description:
  */
 @Service
+@Slf4j
 public class TransferServiceImpl implements TransferService {
     @Autowired
     SqliteFlowMapper sqliteFlowMapper;
@@ -73,12 +75,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public void push() {
-        JSONObject dateJson = FileUtil.readJson(dateAddress);
-        String startTime = dateJson.getString("transferDate");
-        LocalDateTime currentTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String endTime = currentTime.format(formatter);
+    public void push(String startTime, String endTime) {
 
         List<Tide> tideList;
         List<Flow> flowList;
@@ -91,9 +88,10 @@ public class TransferServiceImpl implements TransferService {
         }
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
+        log.info(tideUrl, headers, JSONObject.toJSONString(tideList));
         RequestUtil.postUtil(tideUrl, headers, JSONObject.toJSONString(tideList), JSONObject.class);
+        log.info(tideUrl, headers, JSONObject.toJSONString(tideList));
         RequestUtil.postUtil(flowUrl, headers, JSONObject.toJSONString(flowList), JSONObject.class);
-        dateJson.put("transferDate", endTime);
-        FileUtil.writeJson(dateAddress, dateJson);
+
     }
 }
