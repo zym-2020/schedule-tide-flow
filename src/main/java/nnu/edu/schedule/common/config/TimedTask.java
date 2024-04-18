@@ -91,7 +91,8 @@ public class TimedTask {
         flowJsonChild.put("TM%", timeParam);
         fetchService.fetchFlow(config.getJSONObject("flow").getString("url"), flowHeaders, flowRequestBody.toJSONString());
 
-        dateJson.put("lastDate", currentTime.format(formatter));
+        DateTimeFormatter dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        dateJson.put("lastDate", currentTime.format(dateformat) + " 08:00:00");
         FileUtil.writeJson(dateAddress, dateJson);
         transferService.push(lastDate, currentTime.format(formatter));
     }
