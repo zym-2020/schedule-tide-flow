@@ -42,7 +42,7 @@ public class TimedTask {
     public void fetch() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String lastDate = dateJson.getString("lastDate");
-        LocalDateTime currentTime = LocalDateTime.now().minusHours(1);
+        LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timeParam = lastDate + "," + currentTime.format(formatter);
 
@@ -72,7 +72,7 @@ public class TimedTask {
     public void fetch1() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String lastDate = dateJson.getString("lastDate");
-        LocalDateTime currentTime = LocalDateTime.now().minusHours(1);
+        LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timeParam = lastDate + "," + currentTime.format(formatter);
 
