@@ -38,7 +38,7 @@ public class TimedTask {
     String dateAddress;
 
 
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "0 19 * * * ?")
     public void fetch() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String lastDate = dateJson.getString("lastDate");
@@ -68,7 +68,7 @@ public class TimedTask {
         transferService.push(lastDate, currentTime.format(formatter));
     }
 
-    @Scheduled(cron = "0 30 14 * * ?")
+    @Scheduled(cron = "0 19 * * * ?")
     public void fetch1() {
         JSONObject dateJson = FileUtil.readJson(dateAddress);
         String lastDate = dateJson.getString("lastDate");
